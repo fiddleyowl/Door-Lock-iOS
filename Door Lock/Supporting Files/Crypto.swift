@@ -9,6 +9,7 @@ import Foundation
 import Security
 import CertificateSigningRequest
 import LocalAuthentication
+import CryptoKit
 
 func generateRSAKeyPair(tag: String) -> SecKey? {
     print("generateRSAKeyPair")
@@ -16,7 +17,7 @@ func generateRSAKeyPair(tag: String) -> SecKey? {
     var error: Unmanaged<CFError>?
     guard let access = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenUnlockedThisDeviceOnly, [.userPresence], &error) else {
         print("Failed to setup secure access.")
-        print(error)
+//        print(error)
         return nil
     }
     
@@ -38,7 +39,7 @@ func generateRSAKeyPair(tag: String) -> SecKey? {
     
     guard let privateKey = SecKeyCreateRandomKey(generateAttributes as CFDictionary, &error) else {
         print("Failed to generate RSA private key.")
-        print(error)
+//        print(error)
         return nil
     }
     
@@ -93,6 +94,7 @@ func generateCSR(tag: String, name: String) -> String? {
     print("generateCSR")
     let algorithm = KeyAlgorithm.rsa(signatureType: .sha256)
     let csr = CertificateSigningRequest(commonName: name, organizationName: "Southern University of Science and Technology", countryName: "CN", stateOrProvinceName: "Guangdong", localityName: "Shenzhen", keyAlgorithm: algorithm)
+
     guard let privateKey = getRSAPrivateKey(tag: tag) else {
         print("Failed to get private key.")
         return nil
@@ -126,8 +128,24 @@ func generatePreSharedSecret() -> String {
     return str
 }
 
+func getPreSharedSecret() -> String {
+    return defaults.string(forKey: "PreSharedSecret")!
+}
+
 func randomString(length: Int) -> String {
   let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
   return String((0..<length).map{ _ in letters.randomElement()! })
 }
 
+func sha256(data: Data) -> Data {
+    return Data.init(SHA256.hash(data: data))
+}
+
+func sha256(data: String) -> Data {
+    let rawData = data.data(using: .utf8)!
+    return sha256(data: rawData)
+}
+
+func sha256(data: Data) -> String {
+    return sha256(data: data).hexEncodedString()
+}

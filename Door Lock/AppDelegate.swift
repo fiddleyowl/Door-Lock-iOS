@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        generatePreSharedSecret()
+//        let _ = generatePreSharedSecret()
+        IQKeyboardManager.shared.enable = true
+//        defaults.register(defaults: ["ProtocolIndex": 0])
+        defaults.register(defaults: ["ServerAddress": "acl.philipzhan.com"])
+        defaults.register(defaults: ["IsRegistered": false])
         // Override point for customization after application launch.
         return true
     }

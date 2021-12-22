@@ -8,42 +8,77 @@
 import UIKit
 import NotificationBannerSwift
 
-class RegisterViewController: UIViewController, UITextViewDelegate {
+class RegisterViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
 
     @IBOutlet weak var deviceIDLabel: UILabel!
     @IBOutlet weak var protocolSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var piAddressTextField: UITextField!
-//    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var serverAddressTextField: UITextField!
     @IBOutlet weak var generateCSRButton: UIButton!
     @IBOutlet weak var responseTextView: UITextView!
+    @IBOutlet weak var createNewButton: UIButton!
+    @IBOutlet weak var shareExistingButton: UIButton!
+    @IBOutlet weak var clearAllButton: UIButton!
+    @IBOutlet weak var verifyButton: UIButton!
     
     var banner: NotificationBanner?
     
     @IBAction func generateCSRAction(_ sender: Any) {
-        generateRSAKeyPair(tag: "com.philipzhan.doorlock.mainkey")
-        generatePreSharedSecret()
-        if let csrText = generateCSR(tag: "com.philipzhan.doorlock.mainkey", name: uuid) {
-            UIPasteboard.general.string = csrText
-            
-            print(csrText)
-        }
         hideKeyboard()
+        let _ = generateRSAKeyPair(tag: "com.philipzhan.doorlock.mainkey")
+        let _ = generatePreSharedSecret()
+        if let csrText = generateCSR(tag: "com.philipzhan.doorlock.mainkey", name: deviceUUID) {
+            UIPasteboard.general.string = csrText
+            print(csrText)
+            let temporaryFileURL = tempDirectory.appendingPathComponent(deviceUUID+".csr")
+            let csrData = csrText.data(using: .utf8)!
+            do {
+                try csrData.write(to: temporaryFileURL, options: .atomic)
+                let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
+                // Show the share-view
+                self.present(activityViewController, animated: true, completion: nil)
+            } catch {
+                banner?.dismiss()
+                banner = NotificationBanner(title: error.localizedDescription, style: .danger)
+                banner?.show()
+            }
+        } else {
+            banner?.dismiss()
+            banner = NotificationBanner(title: "Cannot generate CSR.", style: .danger)
+            banner?.show()
+        }
     }
     
     @IBAction func shareExistingCSRAction(_ sender: Any) {
-        if let csrText = generateCSR(tag: "com.philipzhan.doorlock.mainkey", name: uuid) {
+        hideKeyboard()
+        if let csrText = generateCSR(tag: "com.philipzhan.doorlock.mainkey", name: deviceUUID) {
             UIPasteboard.general.string = csrText
             print(csrText)
+            let temporaryFileURL = tempDirectory.appendingPathComponent(deviceUUID+".csr")
+            let csrData = csrText.data(using: .utf8)!
+            do {
+                try csrData.write(to: temporaryFileURL, options: .atomic)
+                let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
+                // Show the share-view
+                self.present(activityViewController, animated: true, completion: nil)
+            } catch {
+                banner?.dismiss()
+                banner = NotificationBanner(title: error.localizedDescription, style: .danger)
+                banner?.show()
+            }
+        } else {
+            banner?.dismiss()
+            banner = NotificationBanner(title: "Cannot generate CSR.", style: .danger)
+            banner?.show()
         }
-        generatePreSharedSecret()
-        hideKeyboard()
     }
     
     @IBAction func verifyCertificateAction(_ sender: Any) {
-        guard let address = piAddressTextField.text else {
+        disableButtons()
+        guard let address = serverAddressTextField.text else {
             banner?.dismiss()
             banner = NotificationBanner(title: "Server address is invalid.", style: .danger)
             banner?.show()
+            enableButtons()
             return
         }
         
@@ -51,6 +86,7 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
             banner?.dismiss()
             banner = NotificationBanner(title: "Server address is invalid.", style: .danger)
             banner?.show()
+            enableButtons()
             return
         }
         
@@ -66,12 +102,14 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
                 banner?.dismiss()
                 banner = NotificationBanner(title: "Unable to parse certificate data.", style: .danger)
                 banner?.show()
+                enableButtons()
                 return
             }
             guard let certificate = SecCertificateCreateWithData(nil, certificateData as CFData) else {
                 banner?.dismiss()
                 banner = NotificationBanner(title: "Certificate data is invalid.", style: .danger)
                 banner?.show()
+                enableButtons()
                 return
             }
 //            print(certificate)
@@ -86,6 +124,7 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
                 banner?.dismiss()
                 banner = NotificationBanner(title: "Unable to verify certificate.", subtitle: status.description, style: .danger)
                 banner?.show()
+                enableButtons()
                 return
                 
             }
@@ -101,28 +140,65 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
                     banner = NotificationBanner(title: "Certificate is valid.", style: .success)
                     banner?.show()
                     print("Certificate is valid.")
+                    self.verifyButton.setTitle("Registering...", for: .disabled)
                     
                     var protocolText = "https"
                     if protocolSegmentedControl.selectedSegmentIndex == 1 {
                         protocolText = "http"
                     }
                     
-                    let url = URL(string: "\(protocolText)://\(address):8443/register_user?type=iOS&device_id=\(uuid)&pre_shared_secret=\(defaults.string(forKey: "PreSharedSecret")!)&certificate=\(certificateText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!.replacingOccurrences(of: "+", with: "%2b"))")!
-                    let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-                        guard let data = data else { return }
-                        print(String(data: data, encoding: .utf8)!)
+                    let url = URL(string: "\(protocolText)://\(address):8443/register_user?type=iOS&device_id=\(deviceUUID)&pre_shared_secret=\(getPreSharedSecret())&certificate=\(certificateText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!.replacingOccurrences(of: "+", with: "%2b"))")!
+                    let sessionConfig = URLSessionConfiguration.default
+                    sessionConfig.timeoutIntervalForRequest = 5.0
+                    let session = URLSession(configuration: sessionConfig)
+                    let task = session.dataTask(with: url) {(data, response, error) in
+                        if error == nil {
+                            DispatchQueue.main.async {
+                                let httpResponse = response as! HTTPURLResponse
+                                if data == "Successfully added user.".data(using: .utf8) {
+                                    self.banner?.dismiss()
+                                    self.banner = NotificationBanner(title: "Successfully registered your device.", style: .success)
+                                    self.banner?.show()
+                                    setRegisterationStatus(true)
+                                    let openDoorTableViewController = self.storyboard!.instantiateViewController(withIdentifier: "openDoorTableViewController") as! OpenDoorTableViewController
+                                    self.present(openDoorTableViewController, animated: true, completion: nil)
+                                    #warning("To main view")
+                                } else {
+                                    self.banner?.dismiss()
+                                    self.banner = NotificationBanner(title: "Failed to register your device.", subtitle: "Status Code: \(httpResponse.statusCode)", style: .danger)
+                                    self.banner?.show()
+                                    self.enableButtons()
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                self.banner?.dismiss()
+                                self.banner = NotificationBanner(title: "Unable to register your device.", subtitle: error?.localizedDescription, style: .danger)
+                                self.banner?.show()
+                                self.verifyButton.setTitle("Verify", for: .normal)
+                                self.enableButtons()
+                            }
+                            
+                        }
+
+//                        guard let data = data else { return }
+//                        print(String(data: data, encoding: .utf8)!)
                     }
                     task.resume()
                 } else {
                     banner?.dismiss()
                     banner = NotificationBanner(title: "Certificate is valid, but mismatches with stored key pair.", style: .warning)
                     banner?.show()
+                    verifyButton.setTitle("Verify", for: .normal)
+                    enableButtons()
                 }
             } else {
                 banner?.dismiss()
                 banner = NotificationBanner(title: "Certificate is invalid.", subtitle: error?.localizedDescription, style: .danger)
                 banner?.show()
-                print(error)
+                verifyButton.setTitle("Verify", for: .normal)
+                enableButtons()
+                print(error as Any)
             }
             
             
@@ -153,9 +229,17 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        serverAddressTextField.delegate = self
         responseTextView.delegate = self
         
-        deviceIDLabel.text = "Your device ID is: " + uuid
+        deviceIDLabel.text = "Your device ID is: " + deviceUUID
+        
+//        protocolSegmentedControl.selectedSegmentIndex = defaults.integer(forKey: "ProtocolIndex")
+        serverAddressTextField.text = getServerAddress()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        setServerAddress(textField.text)
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -164,34 +248,32 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
     }
     
     func hideKeyboard() {
-        piAddressTextField.resignFirstResponder()
+        serverAddressTextField.resignFirstResponder()
 //        nameTextField.resignFirstResponder()
         responseTextView.resignFirstResponder()
     }
     
-    func validateServerAddress(_ address: String) -> Bool {
-        // https://stackoverflow.com/questions/24482958/validate-if-a-string-in-nstextfield-is-a-valid-ip-address-or-domain-name
-        var sin = sockaddr_in()
-        var sin6 = sockaddr_in6()
-        
-        if address.withCString({ cstring in inet_pton(AF_INET6, cstring, &sin6.sin6_addr) }) == 1 {
-            // IPv6 peer.
-            return true
-        }
-        
-        if address.withCString({ cstring in inet_pton(AF_INET, cstring, &sin.sin_addr) }) == 1 {
-            // IPv4 peer.
-            return true
-        }
-        
-        let hostname = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$"
-        
-        return address.range(of: hostname,
-                                  options: .regularExpression,
-                                  range: nil,
-                                  locale: nil) != nil
-        
+    func disableButtons() {
+        createNewButton.isEnabled = false
+        shareExistingButton.isEnabled = false
+        clearAllButton.isEnabled = false
+        verifyButton.isEnabled = false
+        serverAddressTextField.isEnabled = false
+        responseTextView.isEditable = false
+        protocolSegmentedControl.isEnabled = false
     }
+    
+    func enableButtons() {
+        createNewButton.isEnabled = true
+        shareExistingButton.isEnabled = true
+        clearAllButton.isEnabled = true
+        verifyButton.isEnabled = true
+        serverAddressTextField.isEnabled = true
+        responseTextView.isEditable = true
+        protocolSegmentedControl.isEnabled = true
+    }
+    
+    
 
 }
 

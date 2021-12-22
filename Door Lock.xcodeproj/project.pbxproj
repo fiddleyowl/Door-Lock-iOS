@@ -18,6 +18,8 @@
 		D4636A0B27609140001EAA61 /* CertificateSigningRequest in Frameworks */ = {isa = PBXBuildFile; productRef = D4636A0A27609140001EAA61 /* CertificateSigningRequest */; };
 		D4636A0E2760915E001EAA61 /* PublicDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4636A0D2760915E001EAA61 /* PublicDefinitions.swift */; };
 		D4636A10276091C4001EAA61 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4636A0F276091C4001EAA61 /* Crypto.swift */; };
+		D4A97BBA2765C4F40078BDB6 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D4A97BB92765C4F40078BDB6 /* IQKeyboardManagerSwift */; };
+		D4F5F0602771B43C00AA9096 /* OpenDoorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F5F05F2771B43C00AA9096 /* OpenDoorTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,7 @@
 		D43A6179276254BB007D2F8C /* Door_Lock_CA.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = Door_Lock_CA.cer; sourceTree = "<group>"; };
 		D4636A0D2760915E001EAA61 /* PublicDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicDefinitions.swift; sourceTree = "<group>"; };
 		D4636A0F276091C4001EAA61 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
+		D4F5F05F2771B43C00AA9096 /* OpenDoorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenDoorTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +44,7 @@
 			files = (
 				D4636A0B27609140001EAA61 /* CertificateSigningRequest in Frameworks */,
 				D43A617D276259EC007D2F8C /* NotificationBannerSwift in Frameworks */,
+				D4A97BBA2765C4F40078BDB6 /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +75,7 @@
 				D41D69542750D6BE0038B706 /* SceneDelegate.swift */,
 				D41D69562750D6BE0038B706 /* RegisterViewController.swift */,
 				D41D69582750D6BE0038B706 /* Main.storyboard */,
+				D4F5F05F2771B43C00AA9096 /* OpenDoorTableViewController.swift */,
 				D41D695B2750D6C00038B706 /* Assets.xcassets */,
 				D41D695D2750D6C00038B706 /* LaunchScreen.storyboard */,
 				D41D69602750D6C00038B706 /* Info.plist */,
@@ -107,6 +112,7 @@
 			packageProductDependencies = (
 				D4636A0A27609140001EAA61 /* CertificateSigningRequest */,
 				D43A617C276259EC007D2F8C /* NotificationBannerSwift */,
+				D4A97BB92765C4F40078BDB6 /* IQKeyboardManagerSwift */,
 			);
 			productName = "Door Lock";
 			productReference = D41D694F2750D6BE0038B706 /* Door Lock.app */;
@@ -139,6 +145,7 @@
 			packageReferences = (
 				D4636A0927609140001EAA61 /* XCRemoteSwiftPackageReference "CertificateSigningRequest" */,
 				D43A617B276259EC007D2F8C /* XCRemoteSwiftPackageReference "NotificationBanner" */,
+				D4A97BB82765C4F40078BDB6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = D41D69502750D6BE0038B706 /* Products */;
 			projectDirPath = "";
@@ -173,6 +180,7 @@
 				D4636A10276091C4001EAA61 /* Crypto.swift in Sources */,
 				D41D69532750D6BE0038B706 /* AppDelegate.swift in Sources */,
 				D41D69552750D6BE0038B706 /* SceneDelegate.swift in Sources */,
+				D4F5F0602771B43C00AA9096 /* OpenDoorTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +336,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -357,6 +366,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -412,6 +422,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		D4A97BB82765C4F40078BDB6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -424,6 +442,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D4636A0927609140001EAA61 /* XCRemoteSwiftPackageReference "CertificateSigningRequest" */;
 			productName = CertificateSigningRequest;
+		};
+		D4A97BB92765C4F40078BDB6 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4A97BB82765C4F40078BDB6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
