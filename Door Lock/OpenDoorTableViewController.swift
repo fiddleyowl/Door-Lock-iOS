@@ -36,7 +36,9 @@ class OpenDoorTableViewController: UITableViewController {
                 
             }
         } else if indexPath.section == 3 {
-            if indexPath.row == 1 {
+            if indexPath.row == 0 {
+                exportPublicKey()
+            } else if indexPath.row == 1 {
                 exportPrivateKey()
             }
         }
@@ -83,19 +85,19 @@ class OpenDoorTableViewController: UITableViewController {
         }
         let timeMillis = Int(Date.now.timeIntervalSince1970 * 1000)
         let dataString = "Open\(timeMillis)\(deviceUUID)\(getPreSharedSecret())"
-        print(dataString)
+//        print(dataString)
 //        let data: Data = sha256(data: dataString)
-        let data = dataString.data(using: .utf8)
+        let data = dataString.data(using: .utf8)!
         
         var error: Unmanaged<CFError>?
-        guard let signature = SecKeyCreateSignature(privateKey, algorithm, data as! CFData, &error) as Data? else {
+        guard let signature = SecKeyCreateSignature(privateKey, algorithm, data as CFData, &error) as Data? else {
             banner?.dismiss()
             banner = NotificationBanner(title: "Unable to create signature.", subtitle: "\(error?.takeRetainedValue().localizedDescription ?? "")", style: .danger)
             banner?.show()
             return nil
         }
         
-        print(signature.hexEncodedString())
+//        print(signature.hexEncodedString())
         
         let signatureText = signature.hexEncodedString()
         
@@ -120,7 +122,7 @@ class OpenDoorTableViewController: UITableViewController {
         let task = session.dataTask(with: url) {(data, response, error) in
             if error == nil {
                 DispatchQueue.main.async {
-                    let httpResponse = response as! HTTPURLResponse
+//                    let httpResponse = response as! HTTPURLResponse
                     if data == "Door opening.".data(using: .utf8) {
                         self.banner?.dismiss()
                         self.banner = NotificationBanner(title: "Door opening.", style: .success)
@@ -128,11 +130,10 @@ class OpenDoorTableViewController: UITableViewController {
                     } else {
                         let reason = String(data: data!, encoding: .utf8)!
                         self.banner?.dismiss()
-                        self.banner = NotificationBanner(title: "Failed to open the door.", subtitle: "Reason: \(reason)", style: .danger)
+                        self.banner = NotificationBanner(title: "Failed to open the door.", subtitle: reason, style: .danger)
                         self.banner?.show()
                     }
                 }
-                // to main view
             } else {
                 DispatchQueue.main.async {
                     self.banner?.dismiss()
@@ -186,13 +187,37 @@ class OpenDoorTableViewController: UITableViewController {
         task.resume()
     }
     
+    func exportPublicKey() {
+        let key = getRSAPrivateKey(tag: "com.philipzhan.doorlock.mainkey")!
+        guard let pubKey = SecKeyCopyPublicKey(key) else {
+            self.banner?.dismiss()
+            self.banner = NotificationBanner(title: "Unable to copy public key.",  style: .danger)
+            self.banner?.show()
+            return
+        }
+        var error:Unmanaged<CFError>?
+        if let cfdata = SecKeyCopyExternalRepresentation(pubKey, &error) {
+           let data:Data = cfdata as Data
+           let b64KeyString = data.base64EncodedString()
+            let output = "-----BEGIN RSA PUBLIC KEY-----\n"+b64KeyString+"\n-----END RSA PUBLIC KEY-----"
+            UIPasteboard.general.string = output
+            self.banner?.dismiss()
+            self.banner = NotificationBanner(title: "Public key copied to clipbard.",  style: .info)
+            self.banner?.show()
+        }
+    }
+    
     func exportPrivateKey() {
         let key = getRSAPrivateKey(tag: "com.philipzhan.doorlock.mainkey")!
         var error:Unmanaged<CFError>?
         if let cfdata = SecKeyCopyExternalRepresentation(key, &error) {
            let data:Data = cfdata as Data
-           let b64Key = data.base64EncodedString()
-            UIPasteboard.general.string = b64Key
+           let b64KeyString = data.base64EncodedString()
+            let output = "-----BEGIN RSA PRIVATE KEY-----\n"+b64KeyString+"\n-----END RSA PRIVATE KEY-----"
+            UIPasteboard.general.string = output
+            self.banner?.dismiss()
+            self.banner = NotificationBanner(title: "Private key copied to clipbard.",  style: .info)
+            self.banner?.show()
         }
     }
     
