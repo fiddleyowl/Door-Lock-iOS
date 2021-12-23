@@ -161,6 +161,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, UITextViewD
                                     self.banner?.show()
                                     setRegisterationStatus(true)
                                     let openDoorTableViewController = self.storyboard!.instantiateViewController(withIdentifier: "openDoorTableViewController") as! OpenDoorTableViewController
+                                    openDoorTableViewController.modalPresentationStyle = .fullScreen
                                     self.present(openDoorTableViewController, animated: true, completion: nil)
                                     #warning("To main view")
                                 } else {

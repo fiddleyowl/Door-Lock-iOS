@@ -148,7 +148,7 @@ class OpenDoorTableViewController: UITableViewController {
     }
     
     func deactivateDevice(useHTTPS: Bool, serverAddress: String) {
-        guard let url = constructURL(apiName: "deactive_device", requestPrefix: "Deactivate", useHTTPS: useHTTPS, serverAddress: serverAddress) else {
+        guard let url = constructURL(apiName: "deactivate_device", requestPrefix: "Deactivate", useHTTPS: useHTTPS, serverAddress: serverAddress) else {
             return
         }
         
@@ -163,17 +163,18 @@ class OpenDoorTableViewController: UITableViewController {
                         self.banner?.dismiss()
                         self.banner = NotificationBanner(title: "Device deactivated.", style: .success)
                         self.banner?.show()
+                        defaults.removeObject(forKey: "PreSharedSecret")
+                        clearAllGeneratedKeys()
+                        setRegisterationStatus(false)
+                        let registerViewController = self.storyboard!.instantiateViewController(withIdentifier: "registerViewController") as! RegisterViewController
+                        registerViewController.modalPresentationStyle = .fullScreen
+                        self.present(registerViewController, animated: true, completion: nil)
                     } else {
                         self.banner?.dismiss()
                         self.banner = NotificationBanner(title: "Failed to deactivate device.", subtitle: "Status Code: \(httpResponse.statusCode)", style: .danger)
                         self.banner?.show()
                     }
                 }
-                defaults.removeObject(forKey: "PreSharedSecret")
-                clearAllGeneratedKeys()
-                setRegisterationStatus(false)
-                let registerViewController = self.storyboard!.instantiateViewController(withIdentifier: "registerViewController") as! RegisterViewController
-                self.present(registerViewController, animated: true, completion: nil)
                 #warning("To register view.")
             } else {
                 DispatchQueue.main.async {
