@@ -31,7 +31,15 @@ class OpenDoorTableViewController: UITableViewController {
             if indexPath.row == 0 {
                 openDoor(useHTTPS: useHTTPSSwitch.isOn, serverAddress: serverAddressTextField.text ?? "1.1:1")
             } else if indexPath.row == 1 {
-                deactivateDevice(useHTTPS: useHTTPSSwitch.isOn, serverAddress: serverAddressTextField.text ?? "1.1:1")
+                let alert = UIAlertController(title: "Deactivation Confirmation", message: "Deactivating will remove your device from the device list and you will no longer be able to open the door.", preferredStyle: .actionSheet)
+                let confirmAction = UIAlertAction(title: "Confirm", style: .destructive, handler: { _ in
+                    self.deactivateDevice(useHTTPS: self.useHTTPSSwitch.isOn, serverAddress: self.serverAddressTextField.text ?? "1.1:1")
+                })
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                alert.addAction(confirmAction)
+                alert.addAction(cancelAction)
+                present(alert, animated: true, completion: nil)
+                
             } else if indexPath.row == 2 {
                 
             }
@@ -163,6 +171,8 @@ class OpenDoorTableViewController: UITableViewController {
                         self.banner?.dismiss()
                         self.banner = NotificationBanner(title: "Device deactivated.", style: .success)
                         self.banner?.show()
+                        
+                        #warning("To register view.")
                         defaults.removeObject(forKey: "PreSharedSecret")
                         clearAllGeneratedKeys()
                         setRegisterationStatus(false)
@@ -170,12 +180,13 @@ class OpenDoorTableViewController: UITableViewController {
                         registerViewController.modalPresentationStyle = .fullScreen
                         self.present(registerViewController, animated: true, completion: nil)
                     } else {
+                        let reason = String(data: data!, encoding: .utf8)
                         self.banner?.dismiss()
-                        self.banner = NotificationBanner(title: "Failed to deactivate device.", subtitle: "Status Code: \(httpResponse.statusCode)", style: .danger)
+                        self.banner = NotificationBanner(title: "Failed to deactivate device.", subtitle: reason, style: .danger)
                         self.banner?.show()
                     }
                 }
-                #warning("To register view.")
+                
             } else {
                 DispatchQueue.main.async {
                     self.banner?.dismiss()
@@ -203,7 +214,7 @@ class OpenDoorTableViewController: UITableViewController {
             let output = "-----BEGIN RSA PUBLIC KEY-----\n"+b64KeyString+"\n-----END RSA PUBLIC KEY-----"
             UIPasteboard.general.string = output
             self.banner?.dismiss()
-            self.banner = NotificationBanner(title: "Public key copied to clipbard.",  style: .info)
+            self.banner = NotificationBanner(title: "Public key copied to clipboard.",  style: .info)
             self.banner?.show()
         }
     }
@@ -217,7 +228,7 @@ class OpenDoorTableViewController: UITableViewController {
             let output = "-----BEGIN RSA PRIVATE KEY-----\n"+b64KeyString+"\n-----END RSA PRIVATE KEY-----"
             UIPasteboard.general.string = output
             self.banner?.dismiss()
-            self.banner = NotificationBanner(title: "Private key copied to clipbard.",  style: .info)
+            self.banner = NotificationBanner(title: "Private key copied to clipboard.",  style: .info)
             self.banner?.show()
         }
     }

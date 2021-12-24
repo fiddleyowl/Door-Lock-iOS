@@ -155,7 +155,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, UITextViewD
                         if error == nil {
                             DispatchQueue.main.async {
                                 let httpResponse = response as! HTTPURLResponse
-                                if data == "Successfully added user.".data(using: .utf8) {
+                                if data == "Device registered.".data(using: .utf8) {
                                     self.banner?.dismiss()
                                     self.banner = NotificationBanner(title: "Successfully registered your device.", style: .success)
                                     self.banner?.show()
@@ -165,8 +165,9 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, UITextViewD
                                     self.present(openDoorTableViewController, animated: true, completion: nil)
                                     #warning("To main view")
                                 } else {
+                                    let reason = String(data: data!, encoding: .utf8)!
                                     self.banner?.dismiss()
-                                    self.banner = NotificationBanner(title: "Failed to register your device.", subtitle: "Status Code: \(httpResponse.statusCode)", style: .danger)
+                                    self.banner = NotificationBanner(title: "Failed to register your device.", subtitle: reason, style: .danger)
                                     self.banner?.show()
                                     self.enableButtons()
                                 }
