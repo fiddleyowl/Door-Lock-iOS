@@ -23,9 +23,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if isRegistered {
             // If already registered, switch to openDoorTableViewController and make that key view controller.
-            let openDoorTableViewController = storyboard.instantiateViewController (withIdentifier: "openDoorTableViewController") as! OpenDoorTableViewController
+            let openDoorNavigationController = storyboard.instantiateViewController (withIdentifier: "openDoorNavigationController") as! OpenDoorNavigationController
             window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = openDoorTableViewController
+            window?.rootViewController = openDoorNavigationController
             window?.makeKeyAndVisible()
         }
     }

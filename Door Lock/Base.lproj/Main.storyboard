@@ -183,7 +183,6 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                         <outlet property="serverAddressTextField" destination="c0H-GM-R0d" id="TqC-lP-Lea"/>
                         <outlet property="shareExistingButton" destination="qfS-Hb-vW9" id="GEj-oF-G6W"/>
                         <outlet property="verifyButton" destination="xLy-gG-fn7" id="JmC-od-RjB"/>
-                        <segue destination="7h1-xj-gV8" kind="show" id="wa1-Qz-2yG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -195,10 +194,10 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
             </objects>
             <point key="canvasLocation" x="944.92753623188412" y="67.633928571428569"/>
         </scene>
-        <!--Open Door Table View Controller-->
+        <!--Door Lock System-->
         <scene sceneID="dj7-Ro-sJf">
             <objects>
-                <tableViewController storyboardIdentifier="openDoorTableViewController" id="7h1-xj-gV8" customClass="OpenDoorTableViewController" customModule="Door_Lock" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="openDoorTableViewController" title="Door Lock System" id="7h1-xj-gV8" customClass="OpenDoorTableViewController" customModule="Door_Lock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="K5B-5s-9QQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -206,8 +205,8 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                         <sections>
                             <tableViewSection headerTitle="Device ID" id="s3v-8u-Yt8">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="U5p-aZ-pW4">
-                                        <rect key="frame" x="20" y="49.5" width="374" height="43.5"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="U5p-aZ-pW4">
+                                        <rect key="frame" x="20" y="32" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U5p-aZ-pW4" id="xXD-5I-eHw">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -232,7 +231,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                             <tableViewSection headerTitle="Server Information" id="895-iJ-Ibr">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="NM5-wO-gWE">
-                                        <rect key="frame" x="20" y="143" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="125.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NM5-wO-gWE" id="wwJ-JH-tD8">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -257,22 +256,42 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="Kgi-S2-dTU">
-                                        <rect key="frame" x="20" y="186.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="169" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kgi-S2-dTU" id="nC2-sJ-4lm">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="acl.philipzhan.com" placeholder="Server Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pTh-iP-5vt">
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="acl.philipzhan.com" placeholder="Server Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="pTh-iP-5vt">
                                                     <rect key="frame" x="20" y="11" width="334" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="pTh-iP-5vt" firstAttribute="leading" secondItem="nC2-sJ-4lm" secondAttribute="leading" constant="20" symbolic="YES" id="FaW-ke-c2D"/>
+                                                <constraint firstItem="pTh-iP-5vt" firstAttribute="leading" secondItem="nC2-sJ-4lm" secondAttribute="leadingMargin" id="FaW-ke-c2D"/>
                                                 <constraint firstAttribute="trailing" secondItem="pTh-iP-5vt" secondAttribute="trailing" constant="20" symbolic="YES" id="FhA-D2-4x1"/>
                                                 <constraint firstItem="pTh-iP-5vt" firstAttribute="centerY" secondItem="nC2-sJ-4lm" secondAttribute="centerY" id="kcs-Of-a6h"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="MUH-mp-TM3">
+                                        <rect key="frame" x="20" y="212.5" width="374" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MUH-mp-TM3" id="uc8-gr-har">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset Server Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcb-YC-OHe">
+                                                    <rect key="frame" x="20" y="11.5" width="189" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" systemColor="systemBlueColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="hcb-YC-OHe" firstAttribute="centerY" secondItem="uc8-gr-har" secondAttribute="centerY" id="sfO-n9-iQr"/>
+                                                <constraint firstItem="hcb-YC-OHe" firstAttribute="leading" secondItem="uc8-gr-har" secondAttribute="leadingMargin" id="yuE-sR-mJ0"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -281,7 +300,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                             <tableViewSection headerTitle="Operations" id="y6p-6n-Chw">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="qar-Ul-W4B">
-                                        <rect key="frame" x="20" y="280" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="306" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qar-Ul-W4B" id="WAq-vh-ifb">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -301,7 +320,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="fwW-Oc-h8S">
-                                        <rect key="frame" x="20" y="323.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="349.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fwW-Oc-h8S" id="bbg-uX-UAe">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -321,7 +340,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="nVc-o8-68y">
-                                        <rect key="frame" x="20" y="367" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="393" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nVc-o8-68y" id="cgT-4w-Ubv">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -345,7 +364,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                             <tableViewSection headerTitle="Help" id="VKH-gm-m5w">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="nor-5L-mRY">
-                                        <rect key="frame" x="20" y="460.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="486.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nor-5L-mRY" id="2gW-n6-c0R">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -365,7 +384,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="jFz-ab-SCG">
-                                        <rect key="frame" x="20" y="504" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="530" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jFz-ab-SCG" id="kvR-zq-Ac6">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -388,7 +407,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                             </tableViewSection>
                         </sections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="1Kq-Dn-bHs"/>
+                    <navigationItem key="navigationItem" title="Door Lock System" id="1Kq-Dn-bHs"/>
                     <connections>
                         <outlet property="deviceIDLabel" destination="PxF-qN-BJh" id="pc7-Ik-Fqx"/>
                         <outlet property="serverAddressTextField" destination="pTh-iP-5vt" id="5pO-d9-Aat"/>
@@ -397,7 +416,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sHq-uC-7Nr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1818.840579710145" y="67.633928571428569"/>
+            <point key="canvasLocation" x="2842.0289855072465" y="67.633928571428569"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ae2-Yx-MWu">
@@ -416,6 +435,24 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LgR-YH-0kE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="34.782608695652179" y="67.633928571428569"/>
+        </scene>
+        <!--Door Lock System-->
+        <scene sceneID="Phi-u6-o63">
+            <objects>
+                <navigationController storyboardIdentifier="openDoorNavigationController" title="Door Lock System" automaticallyAdjustsScrollViewInsets="NO" id="AAH-25-peO" customClass="OpenDoorNavigationController" customModule="Door_Lock" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="VTB-6p-rud">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="7h1-xj-gV8" kind="relationship" relationship="rootViewController" id="29F-mX-NHE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qvv-ZV-f3s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1931.8840579710147" y="67.633928571428569"/>
         </scene>
     </scenes>
     <resources>

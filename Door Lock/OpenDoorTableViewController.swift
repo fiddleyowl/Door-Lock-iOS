@@ -27,21 +27,39 @@ class OpenDoorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == 2 {
+        if indexPath.section == 0 {
+            UIPasteboard.general.string = deviceUUID
+            banner?.dismiss()
+            banner = NotificationBanner(title: "Device ID copied to clipboard.", style: .info)
+            banner?.show()
+        } else if indexPath.section == 1 {
+            if indexPath.row == 2 {
+                useHTTPSSwitch.setOn(true, animated: true)
+                serverAddressTextField.resignFirstResponder()
+                serverAddressTextField.text = "acl.philipzhan.com"
+                defaults.set("acl.philipzhan.com", forKey: "ServerAddress")
+            }
+        } else if indexPath.section == 2 {
             if indexPath.row == 0 {
                 openDoor(useHTTPS: useHTTPSSwitch.isOn, serverAddress: serverAddressTextField.text ?? "1.1:1")
             } else if indexPath.row == 1 {
                 let alert = UIAlertController(title: "Deactivation Confirmation", message: "Deactivating will remove your device from the device list and you will no longer be able to open the door.", preferredStyle: .actionSheet)
-                let confirmAction = UIAlertAction(title: "Confirm", style: .destructive, handler: { _ in
+                let confirmAction = UIAlertAction(title: "Deactivate", style: .destructive, handler: { _ in
                     self.deactivateDevice(useHTTPS: self.useHTTPSSwitch.isOn, serverAddress: self.serverAddressTextField.text ?? "1.1:1")
                 })
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
                 alert.addAction(confirmAction)
                 alert.addAction(cancelAction)
                 present(alert, animated: true, completion: nil)
-                
             } else if indexPath.row == 2 {
-                
+                let alert = UIAlertController(title: "Reset Confirmation", message: "Use with caution. Resetting will clear all credentials from your device without contacting the server. You will no longer be able to open the door and you need to contact the administrator to register again.", preferredStyle: .actionSheet)
+                let confirmAction = UIAlertAction(title: "Reset", style: .destructive, handler: { _ in
+                    self.resetDevice()
+                })
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                alert.addAction(confirmAction)
+                alert.addAction(cancelAction)
+                present(alert, animated: true, completion: nil)
             }
         } else if indexPath.section == 3 {
             if indexPath.row == 0 {
@@ -91,8 +109,8 @@ class OpenDoorTableViewController: UITableViewController {
             banner?.show()
             return nil
         }
-        let timeMillis = Int(Date.now.timeIntervalSince1970 * 1000)
-        let dataString = "Open\(timeMillis)\(deviceUUID)\(getPreSharedSecret())"
+        let timeMillis = Int(NSDate().timeIntervalSince1970 * 1000)
+        let dataString = "\(requestPrefix)\(timeMillis)\(deviceUUID)\(getPreSharedSecret())"
 //        print(dataString)
 //        let data: Data = sha256(data: dataString)
         let data = dataString.data(using: .utf8)!
@@ -166,19 +184,12 @@ class OpenDoorTableViewController: UITableViewController {
         let task = session.dataTask(with: url) {(data, response, error) in
             if error == nil {
                 DispatchQueue.main.async {
-                    let httpResponse = response as! HTTPURLResponse
+//                    let httpResponse = response as! HTTPURLResponse
                     if data == "Device deactivated.".data(using: .utf8) {
                         self.banner?.dismiss()
-                        self.banner = NotificationBanner(title: "Device deactivated.", style: .success)
+                        self.banner = NotificationBanner(title: "Device deactivated.", style: .info)
                         self.banner?.show()
-                        
-                        #warning("To register view.")
-                        defaults.removeObject(forKey: "PreSharedSecret")
-                        clearAllGeneratedKeys()
-                        setRegisterationStatus(false)
-                        let registerViewController = self.storyboard!.instantiateViewController(withIdentifier: "registerViewController") as! RegisterViewController
-                        registerViewController.modalPresentationStyle = .fullScreen
-                        self.present(registerViewController, animated: true, completion: nil)
+                        self.resetDevice()
                     } else {
                         let reason = String(data: data!, encoding: .utf8)
                         self.banner?.dismiss()
@@ -190,7 +201,7 @@ class OpenDoorTableViewController: UITableViewController {
             } else {
                 DispatchQueue.main.async {
                     self.banner?.dismiss()
-                    self.banner = NotificationBanner(title: "Unable to deactive device.", subtitle: error?.localizedDescription, style: .danger)
+                    self.banner = NotificationBanner(title: "Unable to deactivate device.", subtitle: error?.localizedDescription, style: .danger)
                     self.banner?.show()
                 }
                 
@@ -199,8 +210,30 @@ class OpenDoorTableViewController: UITableViewController {
         task.resume()
     }
     
+    func resetDevice() {
+//        #warning("To register view.")
+        defaults.removeObject(forKey: "PreSharedSecret")
+        clearAllGeneratedKeys()
+        setRegisterationStatus(false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+            UIControl().sendAction(#selector(URLSessionTask.suspend), to: UIApplication.shared, for: nil)
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+            exit(EXIT_SUCCESS)
+        })
+        
+//        let registerViewController = self.storyboard!.instantiateViewController(withIdentifier: "registerViewController") as! RegisterViewController
+//        registerViewController.modalPresentationStyle = .fullScreen
+//        self.present(registerViewController, animated: true, completion: nil)
+    }
+    
     func exportPublicKey() {
-        let key = getRSAPrivateKey(tag: "com.philipzhan.doorlock.mainkey")!
+        guard let key = getRSAPrivateKey(tag: "com.philipzhan.doorlock.mainkey") else {
+            banner?.dismiss()
+            banner = NotificationBanner(title: "Unable to retrieve private key.", style: .danger)
+            banner?.show()
+            return
+        }
         guard let pubKey = SecKeyCopyPublicKey(key) else {
             self.banner?.dismiss()
             self.banner = NotificationBanner(title: "Unable to copy public key.",  style: .danger)
@@ -220,7 +253,12 @@ class OpenDoorTableViewController: UITableViewController {
     }
     
     func exportPrivateKey() {
-        let key = getRSAPrivateKey(tag: "com.philipzhan.doorlock.mainkey")!
+        guard let key = getRSAPrivateKey(tag: "com.philipzhan.doorlock.mainkey") else {
+            banner?.dismiss()
+            banner = NotificationBanner(title: "Unable to retrieve private key.", style: .danger)
+            banner?.show()
+            return
+        }
         var error:Unmanaged<CFError>?
         if let cfdata = SecKeyCopyExternalRepresentation(key, &error) {
            let data:Data = cfdata as Data

@@ -13,6 +13,7 @@
 		D41D695A2750D6BE0038B706 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D41D69582750D6BE0038B706 /* Main.storyboard */; };
 		D41D695C2750D6C00038B706 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41D695B2750D6C00038B706 /* Assets.xcassets */; };
 		D41D695F2750D6C00038B706 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D41D695D2750D6C00038B706 /* LaunchScreen.storyboard */; };
+		D4253D862775689D0031D85A /* OpenDoorNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4253D852775689D0031D85A /* OpenDoorNavigationController.swift */; };
 		D43A617A276254E5007D2F8C /* Door_Lock_CA.cer in Resources */ = {isa = PBXBuildFile; fileRef = D43A6179276254BB007D2F8C /* Door_Lock_CA.cer */; };
 		D43A617D276259EC007D2F8C /* NotificationBannerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D43A617C276259EC007D2F8C /* NotificationBannerSwift */; };
 		D4636A0B27609140001EAA61 /* CertificateSigningRequest in Frameworks */ = {isa = PBXBuildFile; productRef = D4636A0A27609140001EAA61 /* CertificateSigningRequest */; };
@@ -31,6 +32,7 @@
 		D41D695B2750D6C00038B706 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D41D695E2750D6C00038B706 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D41D69602750D6C00038B706 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4253D852775689D0031D85A /* OpenDoorNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenDoorNavigationController.swift; sourceTree = "<group>"; };
 		D43A6179276254BB007D2F8C /* Door_Lock_CA.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = Door_Lock_CA.cer; sourceTree = "<group>"; };
 		D4636A0D2760915E001EAA61 /* PublicDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicDefinitions.swift; sourceTree = "<group>"; };
 		D4636A0F276091C4001EAA61 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				D41D69542750D6BE0038B706 /* SceneDelegate.swift */,
 				D41D69562750D6BE0038B706 /* RegisterViewController.swift */,
 				D41D69582750D6BE0038B706 /* Main.storyboard */,
+				D4253D852775689D0031D85A /* OpenDoorNavigationController.swift */,
 				D4F5F05F2771B43C00AA9096 /* OpenDoorTableViewController.swift */,
 				D41D695B2750D6C00038B706 /* Assets.xcassets */,
 				D41D695D2750D6C00038B706 /* LaunchScreen.storyboard */,
@@ -177,6 +180,7 @@
 			files = (
 				D41D69572750D6BE0038B706 /* RegisterViewController.swift in Sources */,
 				D4636A0E2760915E001EAA61 /* PublicDefinitions.swift in Sources */,
+				D4253D862775689D0031D85A /* OpenDoorNavigationController.swift in Sources */,
 				D4636A10276091C4001EAA61 /* Crypto.swift in Sources */,
 				D41D69532750D6BE0038B706 /* AppDelegate.swift in Sources */,
 				D41D69552750D6BE0038B706 /* SceneDelegate.swift in Sources */,
@@ -329,7 +333,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FNXZ4S24L5;
+				DEVELOPMENT_TEAM = 9966EQFUET;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Door Lock/Info.plist";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "For authenticating.";
@@ -339,6 +343,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -359,7 +364,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FNXZ4S24L5;
+				DEVELOPMENT_TEAM = 9966EQFUET;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Door Lock/Info.plist";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "For authenticating.";
@@ -369,6 +374,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

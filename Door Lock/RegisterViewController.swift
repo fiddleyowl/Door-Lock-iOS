@@ -154,15 +154,16 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, UITextViewD
                     let task = session.dataTask(with: url) {(data, response, error) in
                         if error == nil {
                             DispatchQueue.main.async {
-                                let httpResponse = response as! HTTPURLResponse
+//                                let httpResponse = response as! HTTPURLResponse
                                 if data == "Device registered.".data(using: .utf8) {
                                     self.banner?.dismiss()
                                     self.banner = NotificationBanner(title: "Successfully registered your device.", style: .success)
                                     self.banner?.show()
                                     setRegisterationStatus(true)
-                                    let openDoorTableViewController = self.storyboard!.instantiateViewController(withIdentifier: "openDoorTableViewController") as! OpenDoorTableViewController
-                                    openDoorTableViewController.modalPresentationStyle = .fullScreen
-                                    self.present(openDoorTableViewController, animated: true, completion: nil)
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let openDoorNavigationController = storyboard.instantiateViewController (withIdentifier: "openDoorNavigationController") as! OpenDoorNavigationController
+                                    openDoorNavigationController.modalPresentationStyle = .fullScreen
+                                    self.present(openDoorNavigationController, animated: true, completion: nil)
                                     #warning("To main view")
                                 } else {
                                     let reason = String(data: data!, encoding: .utf8)!
